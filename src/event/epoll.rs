@@ -73,8 +73,6 @@
 #![allow(unused_qualifications)]
 
 use super::epoll;
-#[cfg(feature = "alloc")]
-use crate::backend::c;
 pub use crate::backend::event::epoll::*;
 use crate::backend::event::syscalls;
 use crate::fd::{AsFd, OwnedFd};
@@ -202,7 +200,11 @@ pub fn delete(epoll: impl AsFd, source: impl AsFd) -> io::Result<()> {
 #[cfg(feature = "alloc")]
 #[cfg_attr(docsrs, doc(cfg(feature = "alloc"), alias = "epoll_wait"))]
 #[inline]
-pub fn wait(epoll: impl AsFd, event_list: &mut EventVec, timeout: c::c_int) -> io::Result<()> {
+pub fn wait(
+    epoll: impl AsFd,
+    event_list: &mut EventVec,
+    timeout: crate::ffi::c_int,
+) -> io::Result<()> {
     // SAFETY: We're calling `epoll_wait` via FFI and we know how it
     // behaves.
     unsafe {
@@ -452,6 +454,7 @@ impl<'a> IntoIterator for &'a EventVec {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::backend::c;
 
     #[test]
     fn test_epoll_layouts() {
