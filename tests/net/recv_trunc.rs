@@ -20,10 +20,11 @@ fn net_recv_uninit_trunc() {
     drop(sender);
 
     let mut response = [MaybeUninit::<u8>::zeroed(); 5];
-    let (init, uninit) =
+    let (init, uninit, length) =
         rustix::net::recv_uninit(&receiver, &mut response, RecvFlags::TRUNC).expect("recv_uninit");
 
     // We used the `TRUNC` flag, so we should have only gotten 5 bytes.
     assert_eq!(init, b"Hello");
     assert!(uninit.is_empty());
+    assert_eq!(length, 15);
 }
