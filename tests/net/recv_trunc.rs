@@ -26,5 +26,10 @@ fn net_recv_uninit_trunc() {
     // We used the `TRUNC` flag, so we should have only gotten 5 bytes.
     assert_eq!(init, b"Hello");
     assert!(uninit.is_empty());
+
+    // Check the `length`. On macOS, `RecvFlags::TRUNC` seems to be ignored.
+    #[cfg(apple)]
+    assert_eq!(length, 5);
+    #[cfg(not(apple))]
     assert_eq!(length, 15);
 }
