@@ -1211,30 +1211,35 @@ impl core::fmt::Debug for SpecialCodeIndex {
             Self::VKILL => write!(f, "VKILL"),
             #[cfg(not(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             )))]
             Self::VEOF => write!(f, "VEOF"),
             #[cfg(not(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             )))]
             Self::VTIME => write!(f, "VTIME"),
             #[cfg(not(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             )))]
             Self::VMIN => write!(f, "VMIN"),
 
-            // On Solarish platforms, and Linux on SPARC, `VMIN` and `VTIME`
+            // On Solarish platforms, Linux on SPARC, and Haiku, `VMIN` and `VTIME`
             // have the same value as `VEOF` and `VEOL`.
             #[cfg(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             ))]
             Self::VMIN => write!(f, "VMIN/VEOF"),
             #[cfg(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             ))]
             Self::VTIME => write!(f, "VTIME/VEOL"),
 
@@ -1252,7 +1257,8 @@ impl core::fmt::Debug for SpecialCodeIndex {
             Self::VSUSP => write!(f, "VSUSP"),
             #[cfg(not(any(
                 solarish,
-                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64"))
+                all(linux_kernel, any(target_arch = "sparc", target_arch = "sparc64")),
+                target_os = "haiku",
             )))]
             Self::VEOL => write!(f, "VEOL"),
             #[cfg(not(target_os = "haiku"))]
